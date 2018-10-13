@@ -9,6 +9,6 @@ def test():
     print(get_students())
 
 test()
-print("teeeeeeeet")
+print("teeeeeeeeet")
 print()
 test()
