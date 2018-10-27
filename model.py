@@ -9,6 +9,12 @@ class User(Entity, Base):
     first_name = Column(String)
     last_name = Column(String)
     mobile = Column(String)
+    type = Column(String(50))
+
+    __mapper_args__ = {
+        'polymorphic_identity':'user',
+        'polymorphic_on':type
+    }
 
     def __init__(self, email, first_name, last_name, mobile):
         Entity.__init__(self)
@@ -17,16 +23,17 @@ class User(Entity, Base):
         self.last_name = last_name
         self.mobile = mobile
 
-class Student(Entity, Base):
+class Student(User):
     __tablename__ = 'students'
 
-    email = Column(String)
-    first_name = Column(String)
-    last_name = Column(String)
-    mobile = Column(String)
+    id = Column(Integer, ForeignKey('users.id'), primary_key=True)
     date_of_birth = Column(Date)
     gender = Column(String)
     nationality = Column(String)
+
+    __mapper_args__ = {
+        'polymorphic_identity':'student',
+    }
 
     def __init__(self, email, first_name, last_name, mobile, date_of_birth, gender, nationality):
         User.__init__(self, email, first_name, last_name, mobile)
@@ -34,14 +41,15 @@ class Student(Entity, Base):
         self.gender = gender
         self.nationality = nationality
 
-class Sponsor(Entity, Base):
+class Sponsor(User):
     __tablename__ = 'sponsors'
 
-    email = Column(String)
-    first_name = Column(String)
-    last_name = Column(String)
-    mobile = Column(String)
+    id = Column(Integer, ForeignKey('users.id'), primary_key=True)
     address = Column(String)
+
+    __mapper_args__ = {
+        'polymorphic_identity':'sponsor',
+    }
 
     def __init__(self, email, first_name, last_name, mobile, address):
         User.__init__(self, email, first_name, last_name, mobile)
